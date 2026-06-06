@@ -9,3 +9,38 @@ public CloudResource(String resourceId, String resourceName, String provider) {
     this.resourceName = resourceName;
     this.provider = provider;
 }
+
+// Getters
+public String getResourceId() {
+    return resourceId;
+}
+
+public String getResourceName() {
+    return resourceName;
+}
+
+public String getProvider() {
+    return provider;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
