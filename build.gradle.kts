@@ -16,7 +16,7 @@ application {
     mainClass.set("minitf.cli.MiniTfCli")
 }
 
-task.test {
+tasks.test {
     useJUnitPlatform()
 }
 
