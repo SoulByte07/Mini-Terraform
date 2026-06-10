@@ -1,12 +1,20 @@
 package minitf.core;
 
-private abstract class StorageResource extends CloudResource {
-    protected String storageId;
-    protected String region;
+public abstract class StorageResource extends CloudResource {
+    private int sizeGb;
+    private String region;
 
-    // constructor
-    public StorageResource(String region) {
+    public StorageResource(String resourceId, String name, String provider, int sizeGb, String region) {
+        super(resourceId, name, provider);
+        this.sizeGb = sizeGb;
         this.region = region;
     }
 
+    public int getSizeGb() {
+        return sizeGb;
+    }
+
+    public String getRegion() {
+        return region;
+    }
 }
