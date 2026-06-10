@@ -1,34 +1,40 @@
 package minitf.core;
 
-private class VirtualEC2 extends ComputeResource {
-    public VirtualEC2(String id, String name, String region) {
-        super(id, name, region);
-    }
+public class VirtualEC2 extends ComputeResource {
     private String amiId;
-    private String publicIP;
+    private String publicIp;
 
-    // constuctor
-    public VirtualEC2(String id, String name, String region, String amiId, String publicIP) {
-        super(id, name, region);
+    public VirtualEC2(String resourceId, String name, String amiId, String instanceType) {
+        super(resourceId, name, "aws", instanceType);
         this.amiId = amiId;
-        this.publicIP = publicIP;
+    }
+
+    public String getAmiId() {
+        return amiId;
+    }
+
+    public String getPublicIp() {
+        return publicIp;
     }
 
     @Override
-    public void apply() {
-        this.publicIP = "10.0.0.%d".formatted(hashCode() % 256);
-        this.setStatus("running");
+    public ApplyResult apply() {
+        publicIp = "10.0.0.%d".formatted(hashCode() % 256);
+        setStatus("running");
+        return new ApplyResult(getResourceId(), true, "EC2 instance " + getResourceId() + " is now running at " + publicIp);
     }
 
     @Override
-    public void destroy() {
-        this.publicIP = null;
-        this.setStatus("stop");
+    public DestroyResult destroy() {
+        publicIp = null;
+        setStatus("stopped");
+        return new DestroyResult(getResourceId(), true, "EC2 instance " + getResourceId() + " stopped");
     }
 
     @Override
-    public void destoy(boolean force) {
-        this.publicIP = null;
-        this.setStatus("terminated");
+    public DestroyResult destroy(boolean force) {
+        publicIp = null;
+        setStatus("terminated");
+        return new DestroyResult(getResourceId(), true, "EC2 instance " + getResourceId() + " force-destroyed");
     }
 }
