@@ -1,23 +1,40 @@
 package minitf.core;
 
 public class VirtualS3Bucket extends StorageResource {
-    public VirtualS3Bucket(String region) {
-        super(region);
-        super(StorageSize);
+    private boolean versioning;
+    private String arn;
+
+    public VirtualS3Bucket(String resourceId, String name, int sizeGb, String region, boolean versioning) {
+        super(resourceId, name, "aws", sizeGb, region);
+        this.versioning = versioning;
+    }
+
+    public boolean isVersioning() {
+        return versioning;
+    }
+
+    public String getArn() {
+        return arn;
     }
 
     @Override
-    public void apply() {
-        // Mock provisioning of S3 bucket
-        storageId = "bucket-%03d".formatted(hashCode() % 1000);
-        System.out.println("Provisioned S3 bucket: " + storageId + " in region: " + region);
+    public ApplyResult apply() {
+        arn = "arn:aws:s3:::" + getName();
+        versioning = true;
+        return new ApplyResult(getResourceId(), true, "S3 bucket " + getResourceId() + " created at " + arn);
     }
 
     @Override
-    public void destroy() {
-        // Clear bucket
-        System.out.println("Destroying S3 bucket: " + storageId);
-        storageId = null;
-        region = null;
+    public DestroyResult destroy() {
+        arn = null;
+        versioning = false;
+        return new DestroyResult(getResourceId(), true, "S3 bucket " + getResourceId() + " destroyed");
+    }
+
+    @Override
+    public DestroyResult destroy(boolean force) {
+        arn = null;
+        versioning = false;
+        return new DestroyResult(getResourceId(), true, "S3 bucket " + getResourceId() + " force-destroyed");
     }
 }
