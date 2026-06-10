@@ -1,29 +1,36 @@
 package minitf.core;
+
 import java.util.List;
 
-/*
-  - Fields: `private List<String> subnetIds`
-  - `apply()`: provision subnets (mock IDs like `"subnet-%03d".formatted(hashCode() % 1000)`)
-  - `destroy()`: clear subnets
-*/
-
-public class VirtualVPC extends CloudResource {
+public class VirtualVPC extends NetworkResource {
     private List<String> subnetIds;
 
+    public VirtualVPC(String resourceId, String name, String cidrBlock) {
+        super(resourceId, name, "aws", cidrBlock);
+    }
+
+    public List<String> getSubnetIds() {
+        return subnetIds;
+    }
+
     @Override
-    public void apply() {
-        // Mock provisioning of subnets
+    public ApplyResult apply() {
         subnetIds = List.of(
             "subnet-%03d".formatted(hashCode() % 1000),
             "subnet-%03d".formatted((hashCode() + 1) % 1000)
         );
-        System.out.println("Provisioned VPC with subnets: " + subnetIds);
+        return new ApplyResult(getResourceId(), true, "VPC " + getResourceId() + " provisioned with subnets " + subnetIds);
     }
 
     @Override
-    public void destroy() {
-        // Clear subnets
-        System.out.println("Destroying VPC and clearing subnets: " + subnetIds);
+    public DestroyResult destroy() {
         subnetIds = null;
+        return new DestroyResult(getResourceId(), true, "VPC " + getResourceId() + " destroyed");
+    }
+
+    @Override
+    public DestroyResult destroy(boolean force) {
+        subnetIds = null;
+        return new DestroyResult(getResourceId(), true, "VPC " + getResourceId() + " force-destroyed");
     }
 }
