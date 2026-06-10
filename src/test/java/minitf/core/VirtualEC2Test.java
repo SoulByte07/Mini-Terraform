@@ -12,4 +12,13 @@ public class VirtualEC2Test {
         assertTrue(result.isSuccess());
         assertEquals("VirtualEC2-1", result.getResourceId());
     }
+
+    @Test 
+    public void testDestroy() {
+        VirtualEC2 ec2 = new VirtualEC2("t2.micro", "ami-12345678");
+        ec2.apply(); 
+        DestroyResult result = ec2.destroy();
+        assertTrue(result.isSuccess());
+        assertEquals("VirtualEC2-1", result.getResourceId());
+    }
 }
