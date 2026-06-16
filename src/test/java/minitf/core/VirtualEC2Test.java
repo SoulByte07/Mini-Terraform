@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class VirtualEC2Test {
 
     @Test
-    void apply_setsPublicIpAndRunningStatus() {
+    void applySetsPublicIpAndRunningStatus() {
         VirtualEC2 ec2 = new VirtualEC2("i-001", "web-server", "ami-1234", "t2.micro");
         ApplyResult result = ec2.apply();
 
@@ -17,7 +17,7 @@ class VirtualEC2Test {
     }
 
     @Test
-    void destroy_clearsIpAndSetsStopped() {
+    void destroyClearsIpAndSetsStopped() {
         VirtualEC2 ec2 = new VirtualEC2("i-001", "web-server", "ami-1234", "t2.micro");
         ec2.apply();
         DestroyResult result = ec2.destroy();
