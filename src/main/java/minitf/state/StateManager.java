@@ -1,9 +1,9 @@
 package minitf.state;
 
-import minitf.state.states.State;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,7 +31,7 @@ public class StateManager {
 
     public StateStore load() throws IOException {
         if (Files.notExists(stateFilePath)) {
-            return new StateStore(); // Return empty store if file doesn't exist
+            return new StateStore();
         }
         try {
             String json = Files.readString(stateFilePath);
