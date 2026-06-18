@@ -1,17 +1,19 @@
-package minitf.core;
+package minitf.state;
 
-import java.util.HashMap;
+import minitf.core.CloudResource;
+
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class StateStore {
     private final Map<String, CloudResource> resources;
 
     public StateStore() {
-        this.resources = new HashMap<>();
+        this.resources = new ConcurrentHashMap<>();
     }
 
     public void put(CloudResource resource) {
-        resources.put(resource.getId(), resource);
+        resources.put(resource.getResourceId(), resource);
     }
 
     public CloudResource get(String resourceId) {
@@ -23,7 +25,7 @@ public class StateStore {
     }
 
     public Map<String, CloudResource> getAll() {
-        return new HashMap<>(resources);
+        return new ConcurrentHashMap<>(resources);
     }
 
     public boolean contains(String resourceId) {
